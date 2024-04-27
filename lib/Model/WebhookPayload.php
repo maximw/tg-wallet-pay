@@ -1,6 +1,6 @@
 <?php
 /**
- * OrderAmount
+ * WebhookPayload
  *
  * PHP version 7.4
  *
@@ -32,16 +32,16 @@ use \ArrayAccess;
 use \OpenAPI\Client\ObjectSerializer;
 
 /**
- * OrderAmount Class Doc Comment
+ * WebhookPayload Class Doc Comment
  *
  * @category Class
- * @description Response payload, present if status is SUCCESS
+ * @description Order data. SelectedPaymentOption is absent for failed orders. Status is absent for paid orders.
  * @package  OpenAPI\Client
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
+class WebhookPayload implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
       *
       * @var string
       */
-    protected static $openAPIModelName = 'OrderAmount';
+    protected static $openAPIModelName = 'WebhookPayload';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -58,7 +58,14 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var string[]
       */
     protected static $openAPITypes = [
-        'total_amount' => 'int'
+        'id' => 'int',
+        'number' => 'string',
+        'external_id' => 'string',
+        'status' => '\OpenAPI\Client\Model\OrderStatus',
+        'custom_data' => 'string',
+        'order_amount' => '\OpenAPI\Client\Model\MoneyAmount',
+        'selected_payment_option' => '\OpenAPI\Client\Model\PaymentOption',
+        'order_completed_date_time' => '\DateTime'
     ];
 
     /**
@@ -69,7 +76,14 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'total_amount' => 'int64'
+        'id' => 'int64',
+        'number' => null,
+        'external_id' => null,
+        'status' => null,
+        'custom_data' => null,
+        'order_amount' => null,
+        'selected_payment_option' => null,
+        'order_completed_date_time' => 'date-time'
     ];
 
     /**
@@ -78,7 +92,14 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'total_amount' => false
+        'id' => false,
+        'number' => false,
+        'external_id' => false,
+        'status' => false,
+        'custom_data' => true,
+        'order_amount' => false,
+        'selected_payment_option' => false,
+        'order_completed_date_time' => false
     ];
 
     /**
@@ -167,7 +188,14 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'total_amount' => 'totalAmount'
+        'id' => 'id',
+        'number' => 'number',
+        'external_id' => 'externalId',
+        'status' => 'status',
+        'custom_data' => 'customData',
+        'order_amount' => 'orderAmount',
+        'selected_payment_option' => 'selectedPaymentOption',
+        'order_completed_date_time' => 'orderCompletedDateTime'
     ];
 
     /**
@@ -176,7 +204,14 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'total_amount' => 'setTotalAmount'
+        'id' => 'setId',
+        'number' => 'setNumber',
+        'external_id' => 'setExternalId',
+        'status' => 'setStatus',
+        'custom_data' => 'setCustomData',
+        'order_amount' => 'setOrderAmount',
+        'selected_payment_option' => 'setSelectedPaymentOption',
+        'order_completed_date_time' => 'setOrderCompletedDateTime'
     ];
 
     /**
@@ -185,7 +220,14 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'total_amount' => 'getTotalAmount'
+        'id' => 'getId',
+        'number' => 'getNumber',
+        'external_id' => 'getExternalId',
+        'status' => 'getStatus',
+        'custom_data' => 'getCustomData',
+        'order_amount' => 'getOrderAmount',
+        'selected_payment_option' => 'getSelectedPaymentOption',
+        'order_completed_date_time' => 'getOrderCompletedDateTime'
     ];
 
     /**
@@ -245,7 +287,14 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('total_amount', $data ?? [], null);
+        $this->setIfExists('id', $data ?? [], null);
+        $this->setIfExists('number', $data ?? [], null);
+        $this->setIfExists('external_id', $data ?? [], null);
+        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('custom_data', $data ?? [], null);
+        $this->setIfExists('order_amount', $data ?? [], null);
+        $this->setIfExists('selected_payment_option', $data ?? [], null);
+        $this->setIfExists('order_completed_date_time', $data ?? [], null);
     }
 
     /**
@@ -275,8 +324,28 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if ($this->container['total_amount'] === null) {
-            $invalidProperties[] = "'total_amount' can't be null";
+        if ($this->container['id'] === null) {
+            $invalidProperties[] = "'id' can't be null";
+        }
+        if ($this->container['number'] === null) {
+            $invalidProperties[] = "'number' can't be null";
+        }
+        if ($this->container['external_id'] === null) {
+            $invalidProperties[] = "'external_id' can't be null";
+        }
+        if ((mb_strlen($this->container['external_id']) > 255)) {
+            $invalidProperties[] = "invalid value for 'external_id', the character length must be smaller than or equal to 255.";
+        }
+
+        if (!is_null($this->container['custom_data']) && (mb_strlen($this->container['custom_data']) > 255)) {
+            $invalidProperties[] = "invalid value for 'custom_data', the character length must be smaller than or equal to 255.";
+        }
+
+        if ($this->container['order_amount'] === null) {
+            $invalidProperties[] = "'order_amount' can't be null";
+        }
+        if ($this->container['order_completed_date_time'] === null) {
+            $invalidProperties[] = "'order_completed_date_time' can't be null";
         }
         return $invalidProperties;
     }
@@ -294,28 +363,232 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
 
 
     /**
-     * Gets total_amount
+     * Gets id
      *
      * @return int
      */
-    public function getTotalAmount()
+    public function getId()
     {
-        return $this->container['total_amount'];
+        return $this->container['id'];
     }
 
     /**
-     * Sets total_amount
+     * Sets id
      *
-     * @param int $total_amount Store orders total amount
+     * @param int $id Order id
      *
      * @return self
      */
-    public function setTotalAmount($total_amount)
+    public function setId($id)
     {
-        if (is_null($total_amount)) {
-            throw new \InvalidArgumentException('non-nullable total_amount cannot be null');
+        if (is_null($id)) {
+            throw new \InvalidArgumentException('non-nullable id cannot be null');
         }
-        $this->container['total_amount'] = $total_amount;
+        $this->container['id'] = $id;
+
+        return $this;
+    }
+
+    /**
+     * Gets number
+     *
+     * @return string
+     */
+    public function getNumber()
+    {
+        return $this->container['number'];
+    }
+
+    /**
+     * Sets number
+     *
+     * @param string $number Human-readable short order id shown to a customer
+     *
+     * @return self
+     */
+    public function setNumber($number)
+    {
+        if (is_null($number)) {
+            throw new \InvalidArgumentException('non-nullable number cannot be null');
+        }
+        $this->container['number'] = $number;
+
+        return $this;
+    }
+
+    /**
+     * Gets external_id
+     *
+     * @return string
+     */
+    public function getExternalId()
+    {
+        return $this->container['external_id'];
+    }
+
+    /**
+     * Sets external_id
+     *
+     * @param string $external_id Order ID in Merchant system. Use to prevent orders duplication due to request retries
+     *
+     * @return self
+     */
+    public function setExternalId($external_id)
+    {
+        if (is_null($external_id)) {
+            throw new \InvalidArgumentException('non-nullable external_id cannot be null');
+        }
+        if ((mb_strlen($external_id) > 255)) {
+            throw new \InvalidArgumentException('invalid length for $external_id when calling WebhookPayload., must be smaller than or equal to 255.');
+        }
+
+        $this->container['external_id'] = $external_id;
+
+        return $this;
+    }
+
+    /**
+     * Gets status
+     *
+     * @return \OpenAPI\Client\Model\OrderStatus|null
+     */
+    public function getStatus()
+    {
+        return $this->container['status'];
+    }
+
+    /**
+     * Sets status
+     *
+     * @param \OpenAPI\Client\Model\OrderStatus|null $status status
+     *
+     * @return self
+     */
+    public function setStatus($status)
+    {
+        if (is_null($status)) {
+            throw new \InvalidArgumentException('non-nullable status cannot be null');
+        }
+        $this->container['status'] = $status;
+
+        return $this;
+    }
+
+    /**
+     * Gets custom_data
+     *
+     * @return string|null
+     */
+    public function getCustomData()
+    {
+        return $this->container['custom_data'];
+    }
+
+    /**
+     * Sets custom_data
+     *
+     * @param string|null $custom_data Any custom string, will be provided through webhook and order status polling
+     *
+     * @return self
+     */
+    public function setCustomData($custom_data)
+    {
+        if (is_null($custom_data)) {
+            array_push($this->openAPINullablesSetToNull, 'custom_data');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('custom_data', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        if (!is_null($custom_data) && (mb_strlen($custom_data) > 255)) {
+            throw new \InvalidArgumentException('invalid length for $custom_data when calling WebhookPayload., must be smaller than or equal to 255.');
+        }
+
+        $this->container['custom_data'] = $custom_data;
+
+        return $this;
+    }
+
+    /**
+     * Gets order_amount
+     *
+     * @return \OpenAPI\Client\Model\MoneyAmount
+     */
+    public function getOrderAmount()
+    {
+        return $this->container['order_amount'];
+    }
+
+    /**
+     * Sets order_amount
+     *
+     * @param \OpenAPI\Client\Model\MoneyAmount $order_amount order_amount
+     *
+     * @return self
+     */
+    public function setOrderAmount($order_amount)
+    {
+        if (is_null($order_amount)) {
+            throw new \InvalidArgumentException('non-nullable order_amount cannot be null');
+        }
+        $this->container['order_amount'] = $order_amount;
+
+        return $this;
+    }
+
+    /**
+     * Gets selected_payment_option
+     *
+     * @return \OpenAPI\Client\Model\PaymentOption|null
+     */
+    public function getSelectedPaymentOption()
+    {
+        return $this->container['selected_payment_option'];
+    }
+
+    /**
+     * Sets selected_payment_option
+     *
+     * @param \OpenAPI\Client\Model\PaymentOption|null $selected_payment_option selected_payment_option
+     *
+     * @return self
+     */
+    public function setSelectedPaymentOption($selected_payment_option)
+    {
+        if (is_null($selected_payment_option)) {
+            throw new \InvalidArgumentException('non-nullable selected_payment_option cannot be null');
+        }
+        $this->container['selected_payment_option'] = $selected_payment_option;
+
+        return $this;
+    }
+
+    /**
+     * Gets order_completed_date_time
+     *
+     * @return \DateTime
+     */
+    public function getOrderCompletedDateTime()
+    {
+        return $this->container['order_completed_date_time'];
+    }
+
+    /**
+     * Sets order_completed_date_time
+     *
+     * @param \DateTime $order_completed_date_time ISO 8601 timestamp indicating the time of order completion, in UTC
+     *
+     * @return self
+     */
+    public function setOrderCompletedDateTime($order_completed_date_time)
+    {
+        if (is_null($order_completed_date_time)) {
+            throw new \InvalidArgumentException('non-nullable order_completed_date_time cannot be null');
+        }
+        $this->container['order_completed_date_time'] = $order_completed_date_time;
 
         return $this;
     }

@@ -1,0 +1,806 @@
+---
+openapi: 3.0.1
+servers:
+  - url: https://pay.wallet.tg
+info:
+  title: Wallet Pay
+  version: 1.2.0
+  #  termsOfService: 'http://swagger.io/terms/'
+  #  contact:
+  #    name: API Support
+  #    email: apiteam@swagger.io
+  #    url: https://github.com/Redocly/redoc
+  #  x-logo:
+  #    url: ''
+  #    altText: Wallet pay logo
+  #  license:
+  #    name: Apache 2.0
+  #    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  description: |
+    ### Beta API has been released for first users!
+    We highly appreciate any kind of feedback as it helps us improve our services. Please share your thoughts using this [form](https://forms.gle/TgBB5Dh35i9QvsTf8).
+      
+    # Changelog
+    |Date|Description of change|
+    |-------------|-----------------------|
+    | 2023/08/08  | Added the new `directPayLink` to `OrderPreview` object. This link format can be used in Telegram Web Apps                    |
+    | 2023/12/15  | Added the new `autoConversionCurrency` to `CreateOrderRequest` object.                                                       |
+
+    # Get started
+    **[Wallet Pay](https://pay.wallet.tg/)** is a business platform within [Wallet](https://t.me/wallet) that enables payment transactions between merchants and customers.
+    
+    Useful links:
+    - [Wallet Pay Business Support](https://t.me/WalletPay_supportbot) is a Telegram bot for reaching out the Wallet Pay Support Team.
+    - [Demo Store Bot](https://t.me/PineAppleDemoWPStoreBot) is a Telegram bot for Wallet Pay functionality introduction. (Attention: all payments are carried out in real assets)
+    - [Merchant Community](https://t.me/+6TReWBEyZxI5Njli) is a Telegram group for sharing an experience and solutions between group members.
+    
+    To get started please follow the steps below.
+    
+    ### 1. Log in to the 'Merchant account'
+    
+    Businesses or developers can get started by following the next steps to create a Partner account with us:
+    1. Follow the link https://pay.wallet.tg.
+    2. Click 'Login via Telegram'.
+    3. Enter your phone number in the popup window 'oauth.telegram.org appears', and click 'Apply'.
+    4. You will receive a message in Telegram with an authorisation request, click  'Apply'.
+    5. Click 'Apply' in the popup window  'oauth.telegram.org' in your Web browser.
+    
+    **We recommend using an account to which the person dealing with the finances has access. For legal entities, it is an authorized representative.**
+    
+    ### 2. Take a short survey
+    
+    If you are logging in for the first time, or some additional information is required, Wallet Pay offers you to answer several questions for more details. There are two steps:
+    1. Questionnaire
+    2. KYB (Know-Your-Business) or KYC (Know-Your-Customer) checks
+    
+    Once completed, your application will be reviewed shortly, and you will be notified about the results. If successful, you will see the fee charged by the service, and get access to your account where you can start the integration.
+    
+    **For legal entities, the form can be filled out only by an authorized representative: a director or an employee with a power of attorney.**
+
+    ### 3. Create the first 'Store'
+    Once the 'Survey' is passed successfully, you will be offered to Create your first store.
+    
+    ### 4. Generate 'API key'
+    After naming the first store you will be offered to set it up:
+    1. Generate API Key.
+    2. Copy your API Key and start integration with us.
+    
+    ### 5. Create an Order
+    Using generated Wallet Pay API proceed the following:
+    1. Create an Order.
+    2. Choose the appropriate payment link based on the store implementation and show it to your customer:
+        - `payLink` for 'Text Telegram Bot'
+        - `directPayLink` for 'Text Telegram Bot' or [Telegram Web App](https://core.telegram.org/bots/webapps). 
+        - for [Telegram Web App](https://core.telegram.org/bots/webapps) use `openTelegramLink(url)` function, not `openLink(url[, options])` (unless you want to open the link in browser)
+        - for 'Text Telegram Bot' use `url` field of regular [Inline Button](https://core.telegram.org/bots/api#inlinekeyboardbutton), not MenuButtonWebApp or anything else
+    3. Check the Order status.
+    
+    **Only the specified 'customerTelegramUserId' can open a payment page.**
+
+    ### 6. Withdraw the funds
+    After the customer confirms the payment, the funds are credited to your Assets and held for 48 hours by default.
+    After this time expires, you can withdraw the funds to the balance of **your [Wallet](https://t.me/wallet) account** you used to log in to Wallet Pay service.
+
+    ### 7. Refund
+    For now you can refund from your Wallet account you use to log in to Wallet Pay. But it will be available in your Merchant account in the nearest future.
+
+    ### 8. Sign out from the 'Merchant account'
+    To sign out from your account click 'Sign out'. To log in to your account click 'Log in'.
+    If you want to log in under another Telegram account please proceed the following:
+    1. Go to Telegram and open 'Telegram (Service notification)' dialog.
+    2. Select 'Terminate session'.
+    3. Now you can log in using another Telegram account.
+
+    # Design Guidelines
+    When integrating your 'Telegram Bot' with the 'Wallet pay API', please make sure that the payment button complies with the following guidelines:
+
+    1. The payment button should be named exactly like one of these two: 
+        1. `:purse: Wallet Pay`
+        2. `:purse: Pay via Wallet`.
+    2. The payment button is located above the other buttons (if you have others).
+    
+    Note: `:purse:` is an emoji (see https://emojipedia.org/purse/).
+
+    Please see the example in [Demo Store Bot](https://t.me/PineAppleDemoWPStoreBot).
+
+    # Use Case
+    1. The customer initiates the payment process in the merchant's store.
+    2. Merchant's bot:
+        1. addresses the POST order;
+        2. receives the payment link in response;
+        3. shows the user the payment button.
+    3. The customer taps the payment button.
+    4. The merchant's store redirects the customer to the payment link in the Wallet.
+    5. If the customer uses Wallet for the first time, they agree to:
+        1. add Wallet to the Attachments menu;
+        2. allow Wallet to send messages.
+     6. Wallet:
+        1. authenticates the customer;
+        2. checks the balance and displays a form:
+            1. to confirm the payment (if the balance is sufficient);
+            2. to top up the balance (if the balance is insufficient).
+      7. The customer confirms the payment.
+    8.  Wallet:
+        1. withdraws the funds from the customer's account and credits them to the partner store's account;
+        2. redirects the customer back to the partner's specified returnURL;
+        3. sends a webhook to the merchant.
+    
+    # Troubleshooting
+    
+    ## "Something went wrong" screen
+    The most common reasons of the "Something went wrong" screen when someone opens `payLink` or `directPayLink` are:
+    1. Opening outside Telegram-bot or 'Telegram Web App' specified in your Store
+    2. Opening from [Gaming Platform](https://core.telegram.org/bots/games), it's not supported
+    3. Opening by customer whos `telegramUserId` does not match provided `customerTelegramUserId` field in the Order
+    4. Opening by customer who've been banned from using Wallet Pay as payer for some reason. Contact our [Wallet Pay Business Support](https://t.me/WalletPay_supportbot) for details
+    5. Unexpected error on our side. Contact [Wallet Pay Business Support](https://t.me/WalletPay_supportbot) for help
+
+    # Authorization
+    The 'API key' must be provided in the HTTP header 'Wpay-Store-Api-Key'.
+    
+    Example:
+      ```sh
+    curl -X POST --location 'https://pay.wallet.tg/wpay/store-api/v1/order' \
+    --header 'Wpay-Store-Api-Key: YOUR_STORE_API_KEY'\
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json'
+    -d '{
+      "amount": {
+        "amount": 30.45,
+        "currencyCode": "TON"
+      },
+      "externalId": "ORD-5023-4E89",
+      "timeoutSeconds": 10800,
+      "description": "VPN for 1 month",
+      "returnUrl": "https://t.me/wallet",
+      "failReturnUrl": "https://t.me/wallet",
+      "customData": "client_ref=4E89"
+    }'
+    ```
+
+    # HTTP status codes
+    The table below describes the possible HTTP response codes you can receive when sending an API request.
+    |Code|Description|
+    |-------------|-----------------------|
+    | 200         | OK                    |
+    | 400         | Invalid request       |
+    | 401         | Invalid API key       |
+    | 404         | Not found             |
+    | 429         | Request limit reached |
+    | 500         | Unexpected error      |
+
+paths:
+  "/wpay/store-api/v1/order":
+    post:
+      tags:
+        - Order
+      operationId: create
+      description: "Create an order"
+      parameters:
+        - name: Wpay-Store-Api-Key
+          description: Store API key
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CreateOrderRequest"
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CreateOrderResponse"
+  "/wpay/store-api/v1/reconciliation/order-list":
+    get:
+      tags:
+        - Order Reconciliation
+      operationId: getOrderList
+      description: "Return list of store orders sorted by creation time in ascending order"
+      parameters:
+        - name: Wpay-Store-Api-Key
+          description: Store API key
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: offset
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+            description: "Specifying the amount of excluded from a response the first N orders"
+            minimum: 0
+            example: 0
+        - name: count
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+            description: "Specifying the limit of orders for the request"
+            minimum: 0
+            maximum: 10000
+            example: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GetOrderReconciliationListResponse"
+  "/wpay/store-api/v1/reconciliation/order-amount":
+    get:
+      tags:
+        - Order Reconciliation
+      operationId: getOrderAmount
+      description: Returns total count of all created orders in the Store, including all - paid and unpaid
+      parameters:
+        - name: Wpay-Store-Api-Key
+          description: Store API key
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OrderAmountResponse"
+  "/wpay/store-api/v1/order/preview":
+    get:
+      tags:
+        - Order
+      operationId: getPreview
+      description: Retrieve the order information
+      parameters:
+        - name: Wpay-Store-Api-Key
+          description: Store API key
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: query
+          description: Order id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GetOrderPreviewResponse"
+components:
+  schemas:
+    CreateOrderRequest:
+      required:
+        - amount
+        - externalId
+        - description
+        - timeoutSeconds
+        - customerTelegramUserId
+      type: object
+      properties:
+        amount:
+          "$ref": "#/components/schemas/MoneyAmount"
+        autoConversionCurrency:
+          "$ref": "#/components/schemas/AutoConversionCurrency"
+        description:
+          type: string
+          maxLength: 100
+          minLength: 5
+          description: "Description of the order"
+          example: "VPN for 1 month"
+        returnUrl:
+          type: string
+          nullable: true
+          maxLength: 255
+          description: > 
+            Url to redirect after paying order. 
+            Note: if you want to open your telegram WebApp (https://core.telegram.org/bots/webapps) 
+            then you should use special link format here (https://core.telegram.org/api/links#named-bot-web-app-links). 
+            Example: https://t.me/wallet/start?startapp"
+          example: "https://t.me/wallet"
+        failReturnUrl:
+          type: string
+          nullable: true
+          maxLength: 255
+          description: "Url to redirect after unsuccessful order completion (expiration/cancelation/etc)"
+          example: "https://t.me/wallet"
+        customData:
+          "$ref": "#/components/schemas/CustomData"
+        externalId:
+          "$ref": "#/components/schemas/ExternalId"
+        timeoutSeconds:
+          type: integer
+          format: int64
+          description: "Order TTL, if the order is not paid within the timeout period"
+          minimum: 30
+          maximum: 864000
+          example: 10800
+        customerTelegramUserId:
+          type: integer
+          format: int64
+          description: The customer's telegram id (`User_id`). For more details please follow the link https://core.telegram.org/bots/api#available-types
+    CreateOrderResponse:
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          type: string
+          description: >
+            `SUCCESS` - new order created; `data` is present.
+            `ALREADY` - order with completely same parameters including externalId already exists; `data` is present.
+            `CONFLICT` - order with different parameters but same externalId already exists; `data` is absent.
+            `ACCESS_DENIED` - you're not permitted to create orders, contact support in this case; `data` is absent.
+            `INVALID_REQUEST` - we failed to handle your request, check that all required fields sent properly.
+            `INTERNAL_ERROR` - unexpected error on our side
+          enum:
+            - SUCCESS
+            - ALREADY
+            - CONFLICT
+            - ACCESS_DENIED
+            - INVALID_REQUEST
+            - INTERNAL_ERROR
+        message:
+          type: string
+          description: Verbose reason of non-success result
+          example: ""
+        data:
+          "$ref": "#/components/schemas/OrderPreview"
+    GetOrderPreviewResponse:
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          type: string
+          description: Operation result status, always present
+          enum:
+            - SUCCESS
+            - INVALID_REQUEST
+            - INTERNAL_ERROR
+        message:
+          type: string
+          description: Verbose reason of non-success result
+          example: ""
+        data:
+          "$ref": "#/components/schemas/OrderPreview"
+    OrderPreview:
+      required:
+        - amount
+        - createdDateTime
+        - expirationDateTime
+        - id
+        - number
+        - payLink
+        - directPayLink
+        - status
+      type: object
+      properties:
+        id:
+          type: string
+          description: Order id
+          example: 2703383946854401
+        status:
+          "$ref": "#/components/schemas/OrderStatus"
+        number:
+          "$ref": "#/components/schemas/OrderNumber"
+        amount:
+          "$ref": "#/components/schemas/MoneyAmount"
+        autoConversionCurrency:
+          "$ref": "#/components/schemas/AutoConversionCurrency"
+        createdDateTime:
+          type: string
+          format: date-time
+          description: ISO-8601 date time when order was created
+        expirationDateTime:
+          type: string
+          format: date-time
+          description: ISO-8601 date time when order timeout expires
+        completedDateTime:
+          type: string
+          format: date-time
+          description: ISO-8601 date time when order was completed (paid/expired/etc)
+        payLink:
+          type: string
+          description: "URL to be shown to the payer by the store. Сan be used in 'Telegram Bot' only. 
+          **Important:** this link can be opened ONLY in dialog with Telegram-bot specified in your Store, ONLY by user with `telegramUserId` specified in the Order."
+          example: "https://t.me/wallet?startattach=wpay_order_2703383946854401"
+        directPayLink:
+          type: string
+          description: "URL to be shown to the payer by the store. Can be used in 'Telegram Bot' and 'Telegram Web App'. 
+          **Important:** this link can be opened ONLY in dialog with Telegram-bot specified in your Store, ONLY by user with `telegramUserId` specified in the Order."
+          example: "https://t.me/wallet/start?startapp=wpay_order-orderId__2703383946854401"
+      description: Response payload, present if status is SUCCESS
+    GetOrderReconciliationListResponse:
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          type: string
+          description: Operation result status, always present
+          enum:
+            - SUCCESS
+            - INVALID_REQUEST
+            - INTERNAL_ERROR
+        message:
+          type: string
+          description: Verbose reason of non-success result
+          example: ""
+        data:
+          "$ref": "#/components/schemas/OrderReconciliationList"
+    OrderReconciliationList:
+      required:
+        - items
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OrderReconciliationItem"
+      description: Response payload, present if status is SUCCESS
+    OrderReconciliationItem:
+      required:
+        - amount
+        - createdDateTime
+        - expirationDateTime
+        - externalId
+        - id
+        - status
+      type: object
+      properties:
+        id:
+          "$ref": "#/components/schemas/OrderId"
+        status:
+          "$ref": "#/components/schemas/OrderStatus"
+        amount:
+          "$ref": "#/components/schemas/MoneyAmount"
+        autoConversionCurrency:
+          "$ref": "#/components/schemas/AutoConversionCurrency"
+        externalId:
+          type: string
+          example: "ORD-5023-4E89"
+        customerTelegramUserId:
+          type: integer
+          format: int64
+          description: The order customer telegram id
+        createdDateTime:
+          type: string
+          format: date-time
+          description: ISO-8601 date time when order was created
+        expirationDateTime:
+          type: string
+          format: date-time
+          description: ISO-8601 date time when order timeout expires
+        paymentDateTime:
+          type: string
+          format: date-time
+          description: ISO-8601 date time when order was paid
+        selectedPaymentOption:
+          "$ref": "#/components/schemas/PaymentOption"
+    PaymentOption:
+      description: |
+        User selected payment option.
+        Payer paid the `amount`; you received the `amountNet`; our service took the `amountFee`; 
+
+        The `amount` here may differ from `amount` in the Order because we allow merchants to set order amount in fiat currency,
+        but payer can pay only in cryptocurrency on his choice.
+        (similar to a situation when price in a shop is written in USD, but you can pay with your EUR debit card)
+        You will receive `autoConversionCurrency`, if set, or the cryptocurrency that payer has chosen otherwise.
+      required:
+        - amount
+        - amountFee
+        - amountNet
+        - exchangeRate
+      type: object
+      properties:
+        amount:
+          "$ref": "#/components/schemas/MoneyAmount"
+        amountFee:
+          "$ref": "#/components/schemas/MoneyAmount"
+        amountNet:
+          "$ref": "#/components/schemas/MoneyAmount"
+        exchangeRate:
+          description: Exchange rate of `order.currency` to `payment.currency`
+          type: string
+          format: BigDecimal
+          example: "0.44"
+    OrderAmountResponse:
+      required:
+        - status
+      type: object
+      properties:
+        status:
+          type: string
+          description: Operation result status, always present
+          enum:
+            - SUCCESS
+            - INVALID_REQUEST
+            - INTERNAL_ERROR
+        message:
+          type: string
+          description: Verbose reason of non-success result
+          example: ""
+        data:
+          "$ref": "#/components/schemas/OrderAmount"
+    OrderAmount:
+      required:
+        - totalAmount
+      type: object
+      properties:
+        totalAmount:
+          type: integer
+          format: int64
+          description: Store orders total amount
+      description: Response payload, present if status is SUCCESS
+    MoneyAmount:
+      required:
+        - amount
+        - currencyCode
+      type: object
+      properties:
+        currencyCode:
+          type: string
+          description: "Currency code"
+          enum:
+            - TON
+            - BTC
+            - USDT
+            - EUR
+            - USD
+            - RUB
+          example: USD
+        amount:
+          type: string
+          example: '1.00'
+          format: "BigDecimal"
+          description: |
+            Big decimal string representation.
+            Note that the max precision (number of digits after decimal point) depends on the currencyCode.
+            E.g. for all fiat currencies is 2 (0.01), for TON is 9, for BTC is 8, for USDT is 6.
+            There's also min order amount for creating an order.
+            It's 0.001 TON / 0.000001 BTC / 0.01 USDT / 0.01 USD / 0.01 EUR / 0.1 RUB.
+    AutoConversionCurrency:
+      type: string
+      description: >
+        Crypto currency you want to receive no matter what crypto currency the payer will choose to pay. 
+        If payer's crypto doesn't match this `autoConversionCurrency`, it will be converted automatically.
+        This conversion will cost additional 1% fee to your regular payment fee.
+
+        Limitations:
+
+        * If your order amount in `autoConversionCurrency` is less than 0.1 TON / 1 USDT / 0.000017 BTC accordingly, 
+        we won't be able to convert it automatically, so the payer will have the only Payment Option, which doesn't require conversion - `autoConversionCurrency`
+
+        * if you specify the order amount in crypto, then `autoConversionCurrency` can only be this crypto (or absent).
+
+        If `autoConversionCurrency` is absent, you will receive the currency that payer will choose.
+      enum:
+        - TON
+        - BTC
+        - USDT
+      example: USDT
+    OrderStatus:
+      type: string
+      description: Order status
+      enum:
+        - ACTIVE
+        - EXPIRED
+        - PAID
+        - CANCELLED
+      example: ACTIVE
+    WebhookMessageType:
+      type: string
+      description: Type of webhook message
+      enum:
+        - ORDER_FAILED
+        - ORDER_PAID
+      example: ORDER_PAID
+    OrderId:
+      type: integer
+      format: int64
+      description: Order id
+      example: 2703383946854401
+    OrderNumber:
+      type: string
+      description: Human-readable short order id shown to a customer
+      example: "9aeb581c"
+    ExternalId:
+      type: string
+      description: "Order ID in Merchant system. Use to prevent orders duplication due to request retries"
+      maxLength: 255
+      example: "ORD-5023-4E89"
+    CustomData:
+      type: string
+      nullable: true
+      maxLength: 255
+      description: "Any custom string, will be provided through webhook and order status polling"
+      example: "client_ref=4E89"
+    WebhookMessage:
+      description: "Notification about completed Order"
+      type: object
+      required:
+        - eventDateTime
+        - eventId
+        - type
+        - payload
+      properties:
+        eventDateTime:
+          type: string
+          format: date-time
+          description: ISO-8601 when order was completed
+          example: "2023-07-25T13:17:40.612897Z"
+        eventId:
+          description: Idempotency key. We send a max of one type of webhook message for one event.
+          type: integer
+          format: int64
+        type:
+          "$ref": "#/components/schemas/WebhookMessageType"
+        payload:
+          "$ref": '#/components/schemas/WebhookPayload'
+    WebhookPayload:
+      description: Order data. SelectedPaymentOption is absent for failed orders. Status is absent for paid orders.
+      type: object
+      required:
+        - id
+        - number
+        - externalId
+        - orderAmount
+        - orderCompletedDateTime
+      properties:
+        id:
+          "$ref": "#/components/schemas/OrderId"
+        number:
+          "$ref": "#/components/schemas/OrderNumber"
+        externalId:
+          "$ref": "#/components/schemas/ExternalId"
+        status:
+          "$ref": "#/components/schemas/OrderStatus"
+        customData:
+          "$ref": "#/components/schemas/CustomData"
+        orderAmount:
+          "$ref": "#/components/schemas/MoneyAmount"
+        selectedPaymentOption:
+          "$ref": "#/components/schemas/PaymentOption"
+        orderCompletedDateTime:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp indicating the time of order completion, in UTC
+          example: "2023-07-25T13:17:40.612897Z"
+x-webhooks:
+  completedOrder:
+    post:
+      summary: Getting updates
+      description: |
+        After completing the order, we send a POST request to the store backend if the webhook is configured correctly.
+        We expect the Webhook endpoint to have an SSL certificate issued by trusted certificate authorities (CA), 
+        such as Let's Encrypt. Self-signed certificates will not be accepted.
+        We wait for an HTTP status of 200 and repeat the POST request several times. 
+        Keep in mind that the webhook may be sent multiple times due to network issues and retries.
+        If your integration is configured to receive webhook notifications, they will be sent from specific IP addresses:
+        ```
+        172.255.248.29
+        172.255.248.12
+        ```
+        ### Verifying webhook 
+        You must verify the received update and the integrity of the received data by comparing the `Walletpay-Signature` 
+        header parameter and the Base-64 representation of the HMAC-SHA-256 signature used to sign 
+        "HTTP-method.URI-path.timestamp.Base-64-encoded-body" with the secret key, which is your `Wpay-Store-Api-Key`.
+        timestamp here is the value from `WalletPay-Timestamp` header.
+        Note that URI-path may or may not end in "/" depending on how you specified it in your Store settings.
+        
+        For now we send one message per request, but probably we'll optimize it in the future by sending multiple messages in one request.
+      operationId: completedOrder
+      x-codeSamples:
+        - lang: 'Go'
+          source: |
+            package main
+
+            import (
+                "crypto/hmac"
+                "crypto/sha256"
+                "encoding/base64"
+            )
+
+            func main() {
+                wpayStoreApiKey := "your_secret_api_key_sYIpNypce5sls6Ik"
+                httpMethod := "POST"
+                uriPath := "/webhook/"
+                timestamp := "168824905680291"
+                body := `[{"eventDateTime":"2023-07-28T10:20:17.681338Z","eventId":10030477545046017,"type":"ORDER_PAID","payload":{"id":10030467668508673,"number":"XYTNJP2O","customData":"in exercitation culpa","externalId":"JDF23NN","orderAmount":{"amount":"0.100000340","currencyCode":"TON"},"selectedPaymentOption":{"amount":{"amount":"0.132653","currencyCode":"USDT"},"amountFee":{"amount":"0.001327","currencyCode":"USDT"},"amountNet":{"amount":"0.131326","currencyCode":"USDT"},"exchangeRate":"1.3265247467314987"},"orderCompletedDateTime":"2023-07-28T10:20:17.628946Z"}}]`
+                sign := computeSignature(
+                    wpayStoreApiKey,
+                    httpMethod,
+                    uriPath,
+                    timestamp,
+                    body,
+                )
+                println(sign) // MGfJzeEprADZbihhRcGcCY5pYTI/IEJ91ejyA+XOWAs=
+            }
+
+            func computeSignature(
+                wpayStoreApiKey string,
+                httpMethod string,
+                uriPath string,
+                timestamp string,
+                body string,
+            ) string {
+                base64Body := base64.StdEncoding.EncodeToString([]byte(body))
+                stringToSign := httpMethod + "." + uriPath + "." + timestamp + "." + base64Body
+                mac := hmac.New(sha256.New, []byte(wpayStoreApiKey))
+                mac.Write([]byte(stringToSign))
+                byteArraySignature := mac.Sum(nil)
+                return base64.StdEncoding.EncodeToString(byteArraySignature)
+            }
+        - lang: Kotlin
+          source: |
+            import java.util.*
+            import javax.crypto.Mac
+            import javax.crypto.spec.SecretKeySpec
+
+            fun main() {
+                val sign = computeSignature(
+                    wpayStoreApiKey = "your_secret_api_key_sYIpNypce5sls6Ik",
+                    httpMethod = "POST",
+                    uriPath = "/webhook/",
+                    timestamp = "168824905680291",
+                    body = """[{"eventDateTime":"2023-07-28T10:20:17.681338Z","eventId":10030477545046017,"type":"ORDER_PAID","payload":{"id":10030467668508673,"number":"XYTNJP2O","customData":"in exercitation culpa","externalId":"JDF23NN","orderAmount":{"amount":"0.100000340","currencyCode":"TON"},"selectedPaymentOption":{"amount":{"amount":"0.132653","currencyCode":"USDT"},"amountFee":{"amount":"0.001327","currencyCode":"USDT"},"amountNet":{"amount":"0.131326","currencyCode":"USDT"},"exchangeRate":"1.3265247467314987"},"orderCompletedDateTime":"2023-07-28T10:20:17.628946Z"}}]"""
+                )
+                println(sign) // MGfJzeEprADZbihhRcGcCY5pYTI/IEJ91ejyA+XOWAs=
+            }
+
+            fun computeSignature(
+                wpayStoreApiKey: String,
+                httpMethod: String,
+                uriPath: String,
+                timestamp: String,
+                body: String,
+            ): String {
+                val base64body = String(Base64.getEncoder().encode(body.toByteArray()))
+                val stringToSign = "$httpMethod.$uriPath.$timestamp.$base64body"
+                val mac = Mac.getInstance("HmacSHA256")
+                mac.init(SecretKeySpec(wpayStoreApiKey.toByteArray(), "HmacSHA256"))
+                val byteArraySignature = mac.doFinal(stringToSign.toByteArray())
+                return  String(Base64.getEncoder().encode(byteArraySignature))
+            }
+      parameters:
+        - in: header
+          name: WalletPay-Timestamp
+          required: true
+          example: "168824905680291"
+          schema:
+            type: string
+            format: int64
+            description: Nano time used for HMAC
+        - in: header
+          name: WalletPay-Signature
+          example: "B7gy92BjFxILVctGG32fWBDEy4WW5iGzWs1kziNFGys"
+          schema:
+            type: string
+            description: Base64(HmacSHA256("HTTP-method.URI-path.timestamp.Base-64-encoded-body"))
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example: [{"eventDateTime":"2023-07-25T16:47:06.383352Z","eventId":9906750163000781,"type":"ORDER_PAID","payload":{"id":9906750137900493,"number":"9906750137900493","externalId":"9906750139407821","customData":"<customData>","orderAmount":{"currencyCode":"TON","amount":"1.000000000"},"selectedPaymentOption":{"amount":{"currencyCode":"TON","amount":"314.000000000"},"amountFee":{"currencyCode":"TON","amount":"0.000000000"},"amountNet":{"currencyCode":"TON","amount":"314.000000000"},"exchangeRate":"100"},"orderCompletedDateTime":"2023-07-25T16:47:06.340451Z"}}]
+              type: array
+              items:
+                "$ref": "#/components/schemas/WebhookMessage"
+      responses:
+        "200":
+          description: Return a 200 status to indicate that the data was received successfully

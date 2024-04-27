@@ -2,15 +2,20 @@
 
 ### Beta API has been released for first users!
 We highly appreciate any kind of feedback as it helps us improve our services. Please share your thoughts using this [form](https://forms.gle/TgBB5Dh35i9QvsTf8).
+  
+# Changelog
+|Date|Description of change|
+|-------------|-----------------------|
+| 2023/08/08  | Added the new `directPayLink` to `OrderPreview` object. This link format can be used in Telegram Web Apps                    |
+| 2023/12/15  | Added the new `autoConversionCurrency` to `CreateOrderRequest` object.                                                       |
 
 # Get started
 **[Wallet Pay](https://pay.wallet.tg/)** is a business platform within [Wallet](https://t.me/wallet) that enables payment transactions between merchants and customers.
 
-[Wallet Pay Business Support](https://t.me/WalletPay_supportbot) is a Telegram bot for reaching out the Wallet Pay Support Team.
-
-[Demo Store Bot](https://t.me/PineAppleDemoWPStoreBot) is a Telegram bot for Wallet Pay functionality introduction. (Attention: all payments are carried out in real assets)
-
-[Merchant Community](https://t.me/+6TReWBEyZxI5Njli) is a Telegram group for sharing an experience and solutions between group members.
+Useful links:
+- [Wallet Pay Business Support](https://t.me/WalletPay_supportbot) is a Telegram bot for reaching out the Wallet Pay Support Team.
+- [Demo Store Bot](https://t.me/PineAppleDemoWPStoreBot) is a Telegram bot for Wallet Pay functionality introduction. (Attention: all payments are carried out in real assets)
+- [Merchant Community](https://t.me/+6TReWBEyZxI5Njli) is a Telegram group for sharing an experience and solutions between group members.
 
 To get started please follow the steps below.
 
@@ -46,10 +51,14 @@ After naming the first store you will be offered to set it up:
 ### 5. Create an Order
 Using generated Wallet Pay API proceed the following:
 1. Create an Order.
-2. Send the payLink to your customer to commit the payment.
+2. Choose the appropriate payment link based on the store implementation and show it to your customer:
+    - `payLink` for 'Text Telegram Bot'
+    - `directPayLink` for 'Text Telegram Bot' or [Telegram Web App](https://core.telegram.org/bots/webapps). 
+    - for [Telegram Web App](https://core.telegram.org/bots/webapps) use `openTelegramLink(url)` function, not `openLink(url[, options])` (unless you want to open the link in browser)
+    - for 'Text Telegram Bot' use `url` field of regular [Inline Button](https://core.telegram.org/bots/api#inlinekeyboardbutton), not MenuButtonWebApp or anything else
 3. Check the Order status.
 
-**Only the specified 'customerTelegramUserId' can open 'payLink'.**
+**Only the specified 'customerTelegramUserId' can open a payment page.**
 
 ### 6. Withdraw the funds
 After the customer confirms the payment, the funds are credited to your Assets and held for 48 hours by default.
@@ -66,7 +75,7 @@ If you want to log in under another Telegram account please proceed the followin
 3. Now you can log in using another Telegram account.
 
 # Design Guidelines
-When integrating your 'Telegram BOT' with the 'Wallet pay API', please make sure that the payment button complies with the following guidelines:
+When integrating your 'Telegram Bot' with the 'Wallet pay API', please make sure that the payment button complies with the following guidelines:
 
 1. The payment button should be named exactly like one of these two: 
     1. `:purse: Wallet Pay`
@@ -78,13 +87,13 @@ Note: `:purse:` is an emoji (see https://emojipedia.org/purse/).
 Please see the example in [Demo Store Bot](https://t.me/PineAppleDemoWPStoreBot).
 
 # Use Case
-1. The customer initiates the payment process in the merchant's Telegram bot.
+1. The customer initiates the payment process in the merchant's store.
 2. Merchant's bot:
     1. addresses the POST order;
-    2. receives the payLink in response;
-    3. shows the user the \"Pay\" button.
-3. The customer taps the \"Pay\" button.
-4. The merchant's bot redirects the customer to the payLink in the Wallet Bot.
+    2. receives the payment link in response;
+    3. shows the user the payment button.
+3. The customer taps the payment button.
+4. The merchant's store redirects the customer to the payment link in the Wallet.
 5. If the customer uses Wallet for the first time, they agree to:
     1. add Wallet to the Attachments menu;
     2. allow Wallet to send messages.
@@ -98,6 +107,16 @@ Please see the example in [Demo Store Bot](https://t.me/PineAppleDemoWPStoreBot)
     1. withdraws the funds from the customer's account and credits them to the partner store's account;
     2. redirects the customer back to the partner's specified returnURL;
     3. sends a webhook to the merchant.
+
+# Troubleshooting
+
+## \"Something went wrong\" screen
+The most common reasons of the \"Something went wrong\" screen when someone opens `payLink` or `directPayLink` are:
+1. Opening outside Telegram-bot or 'Telegram Web App' specified in your Store
+2. Opening from [Gaming Platform](https://core.telegram.org/bots/games), it's not supported
+3. Opening by customer whos `telegramUserId` does not match provided `customerTelegramUserId` field in the Order
+4. Opening by customer who've been banned from using Wallet Pay as payer for some reason. Contact our [Wallet Pay Business Support](https://t.me/WalletPay_supportbot) for details
+5. Unexpected error on our side. Contact [Wallet Pay Business Support](https://t.me/WalletPay_supportbot) for help
 
 # Authorization
 The 'API key' must be provided in the HTTP header 'Wpay-Store-Api-Key'.
@@ -133,55 +152,6 @@ The table below describes the possible HTTP response codes you can receive when 
 | 429         | Request limit reached |
 | 500         | Unexpected error      |
 
-# Webhook
-
-After completing the order, we send a POST request to the store backend if the webhook is configured correctly.
-We expect Webhook endpoint to have an SSL certificate issued by trusted certificate authorities (CA), 
-such as Let's Encrypt. Self-signed certificates will not be accepted.
-We wait for an HTTP status of 200 and repeat the POST request several times. 
-Keep in mind that the webhook may be sent multiple times due to network issues and retries.
-If your integration is configured to receive webhook notifications, they will be sent from specific IP addresses:
-```
-172.255.248.29
-172.255.248.12
-```
-
-### Webhook headers
-| Field                   | Type   | Description                                                                       |
-|-------------------------|--------|-----------------------------------------------------------------------------------|
-| WalletPay-Timestamp     | string | Nano time used for HMAC                                                           |
-| Walletpay-Signature     | string | Base64(HmacSHA256(\"HTTP-method.URI-path.timestamp.Base-64-encoded-body\"))         |
-
-### Webhook body
-Body contains ARRAY of webhook-messages.
-
-**Webhook message structure**
-| Field         | Type              | Description                                                                      |
-|---------------|-------------------|----------------------------------------------------------------------------------|
-| eventDateTime | string, date-time | ISO-8601 date time when some event triggered this webhook message                |
-| eventId       | int64             | Idempotency key, for single event we send no more than 1 type of webhook message |
-| type          | string            | Type of payload. Currently ORDER_PAID / ORDER_FAILED                             |
-| payload       | object            | Json payload of message, see \"Payload object structure\" below                    |
-
-**Payload object structure**
-| Field                             | Type              | Description                                                                                                                              |
-|-----------------------------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| status CONDITIONAL                | string            | Order status, clarifying reason of FAIL (e.g. status=EXPIRED) Sent if type=ORDER_FAILED                                                  |
-| id                                | int64             | Order id                                                                                                                                 |
-| number                            | string            | Human-readable (short) order number                                                                                                      |
-| externalId                        | string            | Order ID in the Merchant system                                                                                                          |
-| customData                        | string            | Custom string given during order creation                                                                                                |
-| orderAmount                       | string            | Order amount and currency code  Format: { \"currencyCode\": \"TON\", \"amount\": \"30.45\" }                                                     |
-| selectedPaymentOption CONDITIONAL | json              | User selected payment option.  Format: {\"amount\": {\"currencyCode\": \"TON\",\"amount\": \"10.0\"},\"exchangeRate\": \"1.0\"} Sent if type=ORDER_PAID|
-| orderCompletedDateTime            | string, date-time | ISO-8601 date time when the order was PAID/FAILED                                                                                        |
-
-### Verifying webhook 
-You must verify the received update and the integrity of the received data by comparing the _Walletpay-Signature_ 
-header parameter and the Base-64 representation of the HMAC-SHA-256 signature used to sign 
-\"HTTP-method.URI-path.timestamp.Base-64-encoded-body\" with the secret key, which is your _Wpay-Store-Api-Key_.
-timestamp here is the value from WalletPay-Timestamp header
-<SecurityDefinitions />
-
 
 
 ## Installation & Usage
@@ -200,11 +170,11 @@ To install the bindings via [Composer](https://getcomposer.org/), add the follow
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/sergeybr94/tg-wallet-pay.git"
+      "url": "https://github.com/GIT_USER_ID/GIT_REPO_ID.git"
     }
   ],
   "require": {
-    "sergeybr94/tg-wallet-pay": "*@dev"
+    "GIT_USER_ID/GIT_REPO_ID": "*@dev"
   }
 }
 ```
@@ -231,13 +201,13 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 
-$apiInstance = new WalletPay\Api\OrderApi(
+$apiInstance = new OpenAPI\Client\Api\OrderApi(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
     // This is optional, `GuzzleHttp\Client` will be used as default.
     new GuzzleHttp\Client()
 );
 $wpay_store_api_key = 'wpay_store_api_key_example'; // string | Store API key
-$create_order_request = new \WalletPay\Model\CreateOrderRequest(); // \WalletPay\Model\CreateOrderRequest
+$create_order_request = new \OpenAPI\Client\Model\CreateOrderRequest(); // \OpenAPI\Client\Model\CreateOrderRequest
 
 try {
     $result = $apiInstance->create($wpay_store_api_key, $create_order_request);
@@ -252,15 +222,16 @@ try {
 
 All URIs are relative to *https://pay.wallet.tg*
 
-| Class                    | Method                                                                  | HTTP request                                           | Description |
-|--------------------------|-------------------------------------------------------------------------|--------------------------------------------------------|-------------|
-| *OrderApi*               | [**create**](docs/Api/OrderApi.md#create)                               | **POST** /wpay/store-api/v1/order                      |             |
-| *OrderApi*               | [**getPreview**](docs/Api/OrderApi.md#getpreview)                       | **GET** /wpay/store-api/v1/order/preview               |             |
-| *OrderReconciliationApi* | [**getOrderAmount**](docs/Api/OrderReconciliationApi.md#getorderamount) | **GET** /wpay/store-api/v1/reconciliation/order-amount |             |
-| *OrderReconciliationApi* | [**getOrderList**](docs/Api/OrderReconciliationApi.md#getorderlist)     | **GET** /wpay/store-api/v1/reconciliation/order-list   |             |
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+*OrderApi* | [**create**](docs/Api/OrderApi.md#create) | **POST** /wpay/store-api/v1/order | 
+*OrderApi* | [**getPreview**](docs/Api/OrderApi.md#getpreview) | **GET** /wpay/store-api/v1/order/preview | 
+*OrderReconciliationApi* | [**getOrderAmount**](docs/Api/OrderReconciliationApi.md#getorderamount) | **GET** /wpay/store-api/v1/reconciliation/order-amount | 
+*OrderReconciliationApi* | [**getOrderList**](docs/Api/OrderReconciliationApi.md#getorderlist) | **GET** /wpay/store-api/v1/reconciliation/order-list | 
 
 ## Models
 
+- [AutoConversionCurrency](docs/Model/AutoConversionCurrency.md)
 - [CreateOrderRequest](docs/Model/CreateOrderRequest.md)
 - [CreateOrderResponse](docs/Model/CreateOrderResponse.md)
 - [GetOrderPreviewResponse](docs/Model/GetOrderPreviewResponse.md)
@@ -271,7 +242,11 @@ All URIs are relative to *https://pay.wallet.tg*
 - [OrderPreview](docs/Model/OrderPreview.md)
 - [OrderReconciliationItem](docs/Model/OrderReconciliationItem.md)
 - [OrderReconciliationList](docs/Model/OrderReconciliationList.md)
+- [OrderStatus](docs/Model/OrderStatus.md)
 - [PaymentOption](docs/Model/PaymentOption.md)
+- [WebhookMessage](docs/Model/WebhookMessage.md)
+- [WebhookMessageType](docs/Model/WebhookMessageType.md)
+- [WebhookPayload](docs/Model/WebhookPayload.md)
 
 ## Authorization
 Endpoints do not require authorization.
@@ -293,5 +268,6 @@ vendor/bin/phpunit
 
 This PHP package is automatically generated by the [OpenAPI Generator](https://openapi-generator.tech) project:
 
-- API version: `1.0.0`
+- API version: `1.2.0`
+    - Generator version: `7.6.0-SNAPSHOT`
 - Build package: `org.openapitools.codegen.languages.PhpClientCodegen`

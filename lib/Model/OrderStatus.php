@@ -1,11 +1,11 @@
 <?php
 /**
- * ModelInterface
+ * OrderStatus
  *
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client\Model
+ * @package  OpenAPI\Client
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -27,85 +27,43 @@
  */
 
 namespace OpenAPI\Client\Model;
+use \OpenAPI\Client\ObjectSerializer;
 
 /**
- * Interface abstracting model access.
+ * OrderStatus Class Doc Comment
  *
- * @package OpenAPI\Client\Model
- * @author  OpenAPI Generator team
+ * @category Class
+ * @description Order status
+ * @package  OpenAPI\Client
+ * @author   OpenAPI Generator team
+ * @link     https://openapi-generator.tech
  */
-interface ModelInterface
+class OrderStatus
 {
     /**
-     * The original name of the model.
-     *
-     * @return string
+     * Possible values of this enum
      */
-    public function getModelName();
+    public const ACTIVE = 'ACTIVE';
+
+    public const EXPIRED = 'EXPIRED';
+
+    public const PAID = 'PAID';
+
+    public const CANCELLED = 'CANCELLED';
 
     /**
-     * Array of property to type mappings. Used for (de)serialization
-     *
-     * @return array
+     * Gets allowable values of the enum
+     * @return string[]
      */
-    public static function openAPITypes();
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization
-     *
-     * @return array
-     */
-    public static function openAPIFormats();
-
-    /**
-     * Array of attributes where the key is the local name, and the value is the original name
-     *
-     * @return array
-     */
-    public static function attributeMap();
-
-    /**
-     * Array of attributes to setter functions (for deserialization of responses)
-     *
-     * @return array
-     */
-    public static function setters();
-
-    /**
-     * Array of attributes to getter functions (for serialization of requests)
-     *
-     * @return array
-     */
-    public static function getters();
-
-    /**
-     * Show all the invalid properties with reasons.
-     *
-     * @return array
-     */
-    public function listInvalidProperties();
-
-    /**
-     * Validate all the properties in the model
-     * return true if all passed
-     *
-     * @return bool
-     */
-    public function valid();
-
-    /**
-     * Checks if a property is nullable
-     *
-     * @param string $property
-     * @return bool
-     */
-    public static function isNullable(string $property): bool;
-
-    /**
-     * Checks if a nullable property is set to null.
-     *
-     * @param string $property
-     * @return bool
-     */
-    public function isNullableSetToNull(string $property): bool;
+    public static function getAllowableEnumValues()
+    {
+        return [
+            self::ACTIVE,
+            self::EXPIRED,
+            self::PAID,
+            self::CANCELLED
+        ];
+    }
 }
+
+

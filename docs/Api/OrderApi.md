@@ -1,4 +1,4 @@
-# WalletPay\OrderApi
+# OpenAPI\Client\OrderApi
 
 All URIs are relative to https://pay.wallet.tg, except if the operation defines another base path.
 
@@ -11,7 +11,7 @@ All URIs are relative to https://pay.wallet.tg, except if the operation defines 
 ## `create()`
 
 ```php
-create($wpay_store_api_key, $create_order_request): \WalletPay\Model\CreateOrderResponse
+create($wpay_store_api_key, $create_order_request): \OpenAPI\Client\Model\CreateOrderResponse
 ```
 
 
@@ -26,13 +26,13 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 
-$apiInstance = new WalletPay\Api\OrderApi(
+$apiInstance = new OpenAPI\Client\Api\OrderApi(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
     // This is optional, `GuzzleHttp\Client` will be used as default.
     new GuzzleHttp\Client()
 );
 $wpay_store_api_key = 'wpay_store_api_key_example'; // string | Store API key
-$create_order_request = new \WalletPay\Model\CreateOrderRequest(); // \WalletPay\Model\CreateOrderRequest
+$create_order_request = new \OpenAPI\Client\Model\CreateOrderRequest(); // \OpenAPI\Client\Model\CreateOrderRequest
 
 try {
     $result = $apiInstance->create($wpay_store_api_key, $create_order_request);
@@ -47,11 +47,11 @@ try {
 | Name | Type | Description  | Notes |
 | ------------- | ------------- | ------------- | ------------- |
 | **wpay_store_api_key** | **string**| Store API key | |
-| **create_order_request** | [**\WalletPay\Model\CreateOrderRequest**](../Model/CreateOrderRequest.md)|  | |
+| **create_order_request** | [**\OpenAPI\Client\Model\CreateOrderRequest**](../Model/CreateOrderRequest.md)|  | |
 
 ### Return type
 
-[**\WalletPay\Model\CreateOrderResponse**](../Model/CreateOrderResponse.md)
+[**\OpenAPI\Client\Model\CreateOrderResponse**](../Model/CreateOrderResponse.md)
 
 ### Authorization
 
@@ -69,7 +69,7 @@ No authorization required
 ## `getPreview()`
 
 ```php
-getPreview($wpay_store_api_key, $id): \WalletPay\Model\GetOrderPreviewResponse
+getPreview($wpay_store_api_key, $id): \OpenAPI\Client\Model\GetOrderPreviewResponse
 ```
 
 
@@ -84,7 +84,7 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 
-$apiInstance = new WalletPay\Api\OrderApi(
+$apiInstance = new OpenAPI\Client\Api\OrderApi(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
     // This is optional, `GuzzleHttp\Client` will be used as default.
     new GuzzleHttp\Client()
@@ -109,7 +109,7 @@ try {
 
 ### Return type
 
-[**\WalletPay\Model\GetOrderPreviewResponse**](../Model/GetOrderPreviewResponse.md)
+[**\OpenAPI\Client\Model\GetOrderPreviewResponse**](../Model/GetOrderPreviewResponse.md)
 
 ### Authorization
 

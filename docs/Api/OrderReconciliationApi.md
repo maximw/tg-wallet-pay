@@ -1,4 +1,4 @@
-# WalletPay\OrderReconciliationApi
+# OpenAPI\Client\OrderReconciliationApi
 
 All URIs are relative to https://pay.wallet.tg, except if the operation defines another base path.
 
@@ -11,12 +11,12 @@ All URIs are relative to https://pay.wallet.tg, except if the operation defines 
 ## `getOrderAmount()`
 
 ```php
-getOrderAmount($wpay_store_api_key): \WalletPay\Model\OrderAmountResponse
+getOrderAmount($wpay_store_api_key): \OpenAPI\Client\Model\OrderAmountResponse
 ```
 
 
 
-Return Store orders amount
+Returns total count of all created orders in the Store, including all - paid and unpaid
 
 ### Example
 
@@ -26,7 +26,7 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 
-$apiInstance = new WalletPay\Api\OrderReconciliationApi(
+$apiInstance = new OpenAPI\Client\Api\OrderReconciliationApi(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
     // This is optional, `GuzzleHttp\Client` will be used as default.
     new GuzzleHttp\Client()
@@ -49,7 +49,7 @@ try {
 
 ### Return type
 
-[**\WalletPay\Model\OrderAmountResponse**](../Model/OrderAmountResponse.md)
+[**\OpenAPI\Client\Model\OrderAmountResponse**](../Model/OrderAmountResponse.md)
 
 ### Authorization
 
@@ -67,7 +67,7 @@ No authorization required
 ## `getOrderList()`
 
 ```php
-getOrderList($wpay_store_api_key, $offset, $count): \WalletPay\Model\GetOrderReconciliationListResponse
+getOrderList($wpay_store_api_key, $offset, $count): \OpenAPI\Client\Model\GetOrderReconciliationListResponse
 ```
 
 
@@ -82,7 +82,7 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 
-$apiInstance = new WalletPay\Api\OrderReconciliationApi(
+$apiInstance = new OpenAPI\Client\Api\OrderReconciliationApi(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
     // This is optional, `GuzzleHttp\Client` will be used as default.
     new GuzzleHttp\Client()
@@ -109,7 +109,7 @@ try {
 
 ### Return type
 
-[**\WalletPay\Model\GetOrderReconciliationListResponse**](../Model/GetOrderReconciliationListResponse.md)
+[**\OpenAPI\Client\Model\GetOrderReconciliationListResponse**](../Model/GetOrderReconciliationListResponse.md)
 
 ### Authorization
 

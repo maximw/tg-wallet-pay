@@ -1,11 +1,11 @@
 <?php
 /**
- * ModelInterface
+ * AutoConversionCurrency
  *
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client\Model
+ * @package  OpenAPI\Client
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -27,85 +27,40 @@
  */
 
 namespace OpenAPI\Client\Model;
+use \OpenAPI\Client\ObjectSerializer;
 
 /**
- * Interface abstracting model access.
+ * AutoConversionCurrency Class Doc Comment
  *
- * @package OpenAPI\Client\Model
- * @author  OpenAPI Generator team
+ * @category Class
+ * @description Crypto currency you want to receive no matter what crypto currency the payer will choose to pay.  If payer&#39;s crypto doesn&#39;t match this &#x60;autoConversionCurrency&#x60;, it will be converted automatically. This conversion will cost additional 1% fee to your regular payment fee. Limitations: * If your order amount in &#x60;autoConversionCurrency&#x60; is less than 0.1 TON / 1 USDT / 0.000017 BTC accordingly,  we won&#39;t be able to convert it automatically, so the payer will have the only Payment Option, which doesn&#39;t require conversion - &#x60;autoConversionCurrency&#x60; * if you specify the order amount in crypto, then &#x60;autoConversionCurrency&#x60; can only be this crypto (or absent). If &#x60;autoConversionCurrency&#x60; is absent, you will receive the currency that payer will choose.
+ * @package  OpenAPI\Client
+ * @author   OpenAPI Generator team
+ * @link     https://openapi-generator.tech
  */
-interface ModelInterface
+class AutoConversionCurrency
 {
     /**
-     * The original name of the model.
-     *
-     * @return string
+     * Possible values of this enum
      */
-    public function getModelName();
+    public const TON = 'TON';
+
+    public const BTC = 'BTC';
+
+    public const USDT = 'USDT';
 
     /**
-     * Array of property to type mappings. Used for (de)serialization
-     *
-     * @return array
+     * Gets allowable values of the enum
+     * @return string[]
      */
-    public static function openAPITypes();
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization
-     *
-     * @return array
-     */
-    public static function openAPIFormats();
-
-    /**
-     * Array of attributes where the key is the local name, and the value is the original name
-     *
-     * @return array
-     */
-    public static function attributeMap();
-
-    /**
-     * Array of attributes to setter functions (for deserialization of responses)
-     *
-     * @return array
-     */
-    public static function setters();
-
-    /**
-     * Array of attributes to getter functions (for serialization of requests)
-     *
-     * @return array
-     */
-    public static function getters();
-
-    /**
-     * Show all the invalid properties with reasons.
-     *
-     * @return array
-     */
-    public function listInvalidProperties();
-
-    /**
-     * Validate all the properties in the model
-     * return true if all passed
-     *
-     * @return bool
-     */
-    public function valid();
-
-    /**
-     * Checks if a property is nullable
-     *
-     * @param string $property
-     * @return bool
-     */
-    public static function isNullable(string $property): bool;
-
-    /**
-     * Checks if a nullable property is set to null.
-     *
-     * @param string $property
-     * @return bool
-     */
-    public function isNullableSetToNull(string $property): bool;
+    public static function getAllowableEnumValues()
+    {
+        return [
+            self::TON,
+            self::BTC,
+            self::USDT
+        ];
+    }
 }
+
+

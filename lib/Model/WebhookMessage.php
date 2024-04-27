@@ -1,6 +1,6 @@
 <?php
 /**
- * OrderAmount
+ * WebhookMessage
  *
  * PHP version 7.4
  *
@@ -32,16 +32,16 @@ use \ArrayAccess;
 use \OpenAPI\Client\ObjectSerializer;
 
 /**
- * OrderAmount Class Doc Comment
+ * WebhookMessage Class Doc Comment
  *
  * @category Class
- * @description Response payload, present if status is SUCCESS
+ * @description Notification about completed Order
  * @package  OpenAPI\Client
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
+class WebhookMessage implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
       *
       * @var string
       */
-    protected static $openAPIModelName = 'OrderAmount';
+    protected static $openAPIModelName = 'WebhookMessage';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -58,7 +58,10 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var string[]
       */
     protected static $openAPITypes = [
-        'total_amount' => 'int'
+        'event_date_time' => '\DateTime',
+        'event_id' => 'int',
+        'type' => '\OpenAPI\Client\Model\WebhookMessageType',
+        'payload' => '\OpenAPI\Client\Model\WebhookPayload'
     ];
 
     /**
@@ -69,7 +72,10 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'total_amount' => 'int64'
+        'event_date_time' => 'date-time',
+        'event_id' => 'int64',
+        'type' => null,
+        'payload' => null
     ];
 
     /**
@@ -78,7 +84,10 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'total_amount' => false
+        'event_date_time' => false,
+        'event_id' => false,
+        'type' => false,
+        'payload' => false
     ];
 
     /**
@@ -167,7 +176,10 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'total_amount' => 'totalAmount'
+        'event_date_time' => 'eventDateTime',
+        'event_id' => 'eventId',
+        'type' => 'type',
+        'payload' => 'payload'
     ];
 
     /**
@@ -176,7 +188,10 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'total_amount' => 'setTotalAmount'
+        'event_date_time' => 'setEventDateTime',
+        'event_id' => 'setEventId',
+        'type' => 'setType',
+        'payload' => 'setPayload'
     ];
 
     /**
@@ -185,7 +200,10 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'total_amount' => 'getTotalAmount'
+        'event_date_time' => 'getEventDateTime',
+        'event_id' => 'getEventId',
+        'type' => 'getType',
+        'payload' => 'getPayload'
     ];
 
     /**
@@ -245,7 +263,10 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
-        $this->setIfExists('total_amount', $data ?? [], null);
+        $this->setIfExists('event_date_time', $data ?? [], null);
+        $this->setIfExists('event_id', $data ?? [], null);
+        $this->setIfExists('type', $data ?? [], null);
+        $this->setIfExists('payload', $data ?? [], null);
     }
 
     /**
@@ -275,8 +296,17 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if ($this->container['total_amount'] === null) {
-            $invalidProperties[] = "'total_amount' can't be null";
+        if ($this->container['event_date_time'] === null) {
+            $invalidProperties[] = "'event_date_time' can't be null";
+        }
+        if ($this->container['event_id'] === null) {
+            $invalidProperties[] = "'event_id' can't be null";
+        }
+        if ($this->container['type'] === null) {
+            $invalidProperties[] = "'type' can't be null";
+        }
+        if ($this->container['payload'] === null) {
+            $invalidProperties[] = "'payload' can't be null";
         }
         return $invalidProperties;
     }
@@ -294,28 +324,109 @@ class OrderAmount implements ModelInterface, ArrayAccess, \JsonSerializable
 
 
     /**
-     * Gets total_amount
+     * Gets event_date_time
      *
-     * @return int
+     * @return \DateTime
      */
-    public function getTotalAmount()
+    public function getEventDateTime()
     {
-        return $this->container['total_amount'];
+        return $this->container['event_date_time'];
     }
 
     /**
-     * Sets total_amount
+     * Sets event_date_time
      *
-     * @param int $total_amount Store orders total amount
+     * @param \DateTime $event_date_time ISO-8601 when order was completed
      *
      * @return self
      */
-    public function setTotalAmount($total_amount)
+    public function setEventDateTime($event_date_time)
     {
-        if (is_null($total_amount)) {
-            throw new \InvalidArgumentException('non-nullable total_amount cannot be null');
+        if (is_null($event_date_time)) {
+            throw new \InvalidArgumentException('non-nullable event_date_time cannot be null');
         }
-        $this->container['total_amount'] = $total_amount;
+        $this->container['event_date_time'] = $event_date_time;
+
+        return $this;
+    }
+
+    /**
+     * Gets event_id
+     *
+     * @return int
+     */
+    public function getEventId()
+    {
+        return $this->container['event_id'];
+    }
+
+    /**
+     * Sets event_id
+     *
+     * @param int $event_id Idempotency key. We send a max of one type of webhook message for one event.
+     *
+     * @return self
+     */
+    public function setEventId($event_id)
+    {
+        if (is_null($event_id)) {
+            throw new \InvalidArgumentException('non-nullable event_id cannot be null');
+        }
+        $this->container['event_id'] = $event_id;
+
+        return $this;
+    }
+
+    /**
+     * Gets type
+     *
+     * @return \OpenAPI\Client\Model\WebhookMessageType
+     */
+    public function getType()
+    {
+        return $this->container['type'];
+    }
+
+    /**
+     * Sets type
+     *
+     * @param \OpenAPI\Client\Model\WebhookMessageType $type type
+     *
+     * @return self
+     */
+    public function setType($type)
+    {
+        if (is_null($type)) {
+            throw new \InvalidArgumentException('non-nullable type cannot be null');
+        }
+        $this->container['type'] = $type;
+
+        return $this;
+    }
+
+    /**
+     * Gets payload
+     *
+     * @return \OpenAPI\Client\Model\WebhookPayload
+     */
+    public function getPayload()
+    {
+        return $this->container['payload'];
+    }
+
+    /**
+     * Sets payload
+     *
+     * @param \OpenAPI\Client\Model\WebhookPayload $payload payload
+     *
+     * @return self
+     */
+    public function setPayload($payload)
+    {
+        if (is_null($payload)) {
+            throw new \InvalidArgumentException('non-nullable payload cannot be null');
+        }
+        $this->container['payload'] = $payload;
 
         return $this;
     }
