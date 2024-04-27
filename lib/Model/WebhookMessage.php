@@ -5,7 +5,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  WalletPay
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -26,17 +26,17 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\Model;
+namespace WalletPay\Model;
 
 use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use \WalletPay\ObjectSerializer;
 
 /**
  * WebhookMessage Class Doc Comment
  *
  * @category Class
  * @description Notification about completed Order
- * @package  OpenAPI\Client
+ * @package  WalletPay
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
@@ -60,8 +60,8 @@ class WebhookMessage implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $openAPITypes = [
         'event_date_time' => '\DateTime',
         'event_id' => 'int',
-        'type' => '\OpenAPI\Client\Model\WebhookMessageType',
-        'payload' => '\OpenAPI\Client\Model\WebhookPayload'
+        'type' => '\WalletPay\Model\WebhookMessageType',
+        'payload' => '\WalletPay\Model\WebhookPayload'
     ];
 
     /**
@@ -380,7 +380,7 @@ class WebhookMessage implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets type
      *
-     * @return \OpenAPI\Client\Model\WebhookMessageType
+     * @return \WalletPay\Model\WebhookMessageType
      */
     public function getType()
     {
@@ -390,7 +390,7 @@ class WebhookMessage implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets type
      *
-     * @param \OpenAPI\Client\Model\WebhookMessageType $type type
+     * @param \WalletPay\Model\WebhookMessageType $type type
      *
      * @return self
      */
@@ -407,7 +407,7 @@ class WebhookMessage implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets payload
      *
-     * @return \OpenAPI\Client\Model\WebhookPayload
+     * @return \WalletPay\Model\WebhookPayload
      */
     public function getPayload()
     {
@@ -417,7 +417,7 @@ class WebhookMessage implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets payload
      *
-     * @param \OpenAPI\Client\Model\WebhookPayload $payload payload
+     * @param \WalletPay\Model\WebhookPayload $payload payload
      *
      * @return self
      */

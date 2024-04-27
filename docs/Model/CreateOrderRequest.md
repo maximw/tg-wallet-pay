@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**amount** | [**\OpenAPI\Client\Model\MoneyAmount**](MoneyAmount.md) |  |
-**auto_conversion_currency** | [**\OpenAPI\Client\Model\AutoConversionCurrency**](AutoConversionCurrency.md) |  | [optional]
+**amount** | [**\WalletPay\Model\MoneyAmount**](MoneyAmount.md) |  |
+**auto_conversion_currency** | [**\WalletPay\Model\AutoConversionCurrency**](AutoConversionCurrency.md) |  | [optional]
 **description** | **string** | Description of the order |
 **return_url** | **string** | Url to redirect after paying order.  Note: if you want to open your telegram WebApp (https://core.telegram.org/bots/webapps)  then you should use special link format here (https://core.telegram.org/api/links#named-bot-web-app-links).  Example: https://t.me/wallet/start?startapp\&quot; | [optional]
 **fail_return_url** | **string** | Url to redirect after unsuccessful order completion (expiration/cancelation/etc) | [optional]

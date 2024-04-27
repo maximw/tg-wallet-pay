@@ -5,7 +5,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  WalletPay
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -26,16 +26,16 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\Model;
+namespace WalletPay\Model;
 
 use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use \WalletPay\ObjectSerializer;
 
 /**
  * CreateOrderRequest Class Doc Comment
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  WalletPay
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
@@ -57,8 +57,8 @@ class CreateOrderRequest implements ModelInterface, ArrayAccess, \JsonSerializab
       * @var string[]
       */
     protected static $openAPITypes = [
-        'amount' => '\OpenAPI\Client\Model\MoneyAmount',
-        'auto_conversion_currency' => '\OpenAPI\Client\Model\AutoConversionCurrency',
+        'amount' => '\WalletPay\Model\MoneyAmount',
+        'auto_conversion_currency' => '\WalletPay\Model\AutoConversionCurrency',
         'description' => 'string',
         'return_url' => 'string',
         'fail_return_url' => 'string',
@@ -395,7 +395,7 @@ class CreateOrderRequest implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets amount
      *
-     * @return \OpenAPI\Client\Model\MoneyAmount
+     * @return \WalletPay\Model\MoneyAmount
      */
     public function getAmount()
     {
@@ -405,7 +405,7 @@ class CreateOrderRequest implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets amount
      *
-     * @param \OpenAPI\Client\Model\MoneyAmount $amount amount
+     * @param \WalletPay\Model\MoneyAmount $amount amount
      *
      * @return self
      */
@@ -422,7 +422,7 @@ class CreateOrderRequest implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets auto_conversion_currency
      *
-     * @return \OpenAPI\Client\Model\AutoConversionCurrency|null
+     * @return \WalletPay\Model\AutoConversionCurrency|null
      */
     public function getAutoConversionCurrency()
     {
@@ -432,7 +432,7 @@ class CreateOrderRequest implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets auto_conversion_currency
      *
-     * @param \OpenAPI\Client\Model\AutoConversionCurrency|null $auto_conversion_currency auto_conversion_currency
+     * @param \WalletPay\Model\AutoConversionCurrency|null $auto_conversion_currency auto_conversion_currency
      *
      * @return self
      */

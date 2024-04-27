@@ -5,7 +5,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  WalletPay
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -26,15 +26,15 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\Model;
-use \OpenAPI\Client\ObjectSerializer;
+namespace WalletPay\Model;
+use \WalletPay\ObjectSerializer;
 
 /**
  * AutoConversionCurrency Class Doc Comment
  *
  * @category Class
  * @description Crypto currency you want to receive no matter what crypto currency the payer will choose to pay.  If payer&#39;s crypto doesn&#39;t match this &#x60;autoConversionCurrency&#x60;, it will be converted automatically. This conversion will cost additional 1% fee to your regular payment fee. Limitations: * If your order amount in &#x60;autoConversionCurrency&#x60; is less than 0.1 TON / 1 USDT / 0.000017 BTC accordingly,  we won&#39;t be able to convert it automatically, so the payer will have the only Payment Option, which doesn&#39;t require conversion - &#x60;autoConversionCurrency&#x60; * if you specify the order amount in crypto, then &#x60;autoConversionCurrency&#x60; can only be this crypto (or absent). If &#x60;autoConversionCurrency&#x60; is absent, you will receive the currency that payer will choose.
- * @package  OpenAPI\Client
+ * @package  WalletPay
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */

@@ -5,7 +5,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  WalletPay
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -26,17 +26,17 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\Model;
+namespace WalletPay\Model;
 
 use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use \WalletPay\ObjectSerializer;
 
 /**
  * OrderPreview Class Doc Comment
  *
  * @category Class
  * @description Response payload, present if status is SUCCESS
- * @package  OpenAPI\Client
+ * @package  WalletPay
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
@@ -59,10 +59,10 @@ class OrderPreview implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPITypes = [
         'id' => 'string',
-        'status' => '\OpenAPI\Client\Model\OrderStatus',
+        'status' => '\WalletPay\Model\OrderStatus',
         'number' => 'string',
-        'amount' => '\OpenAPI\Client\Model\MoneyAmount',
-        'auto_conversion_currency' => '\OpenAPI\Client\Model\AutoConversionCurrency',
+        'amount' => '\WalletPay\Model\MoneyAmount',
+        'auto_conversion_currency' => '\WalletPay\Model\AutoConversionCurrency',
         'created_date_time' => '\DateTime',
         'expiration_date_time' => '\DateTime',
         'completed_date_time' => '\DateTime',
@@ -407,7 +407,7 @@ class OrderPreview implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets status
      *
-     * @return \OpenAPI\Client\Model\OrderStatus
+     * @return \WalletPay\Model\OrderStatus
      */
     public function getStatus()
     {
@@ -417,7 +417,7 @@ class OrderPreview implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets status
      *
-     * @param \OpenAPI\Client\Model\OrderStatus $status status
+     * @param \WalletPay\Model\OrderStatus $status status
      *
      * @return self
      */
@@ -461,7 +461,7 @@ class OrderPreview implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets amount
      *
-     * @return \OpenAPI\Client\Model\MoneyAmount
+     * @return \WalletPay\Model\MoneyAmount
      */
     public function getAmount()
     {
@@ -471,7 +471,7 @@ class OrderPreview implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets amount
      *
-     * @param \OpenAPI\Client\Model\MoneyAmount $amount amount
+     * @param \WalletPay\Model\MoneyAmount $amount amount
      *
      * @return self
      */
@@ -488,7 +488,7 @@ class OrderPreview implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets auto_conversion_currency
      *
-     * @return \OpenAPI\Client\Model\AutoConversionCurrency|null
+     * @return \WalletPay\Model\AutoConversionCurrency|null
      */
     public function getAutoConversionCurrency()
     {
@@ -498,7 +498,7 @@ class OrderPreview implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets auto_conversion_currency
      *
-     * @param \OpenAPI\Client\Model\AutoConversionCurrency|null $auto_conversion_currency auto_conversion_currency
+     * @param \WalletPay\Model\AutoConversionCurrency|null $auto_conversion_currency auto_conversion_currency
      *
      * @return self
      */

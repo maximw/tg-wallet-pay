@@ -5,7 +5,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  WalletPay
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -26,16 +26,16 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\Model;
+namespace WalletPay\Model;
 
 use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use \WalletPay\ObjectSerializer;
 
 /**
  * OrderReconciliationItem Class Doc Comment
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  WalletPay
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
@@ -58,15 +58,15 @@ class OrderReconciliationItem implements ModelInterface, ArrayAccess, \JsonSeria
       */
     protected static $openAPITypes = [
         'id' => 'int',
-        'status' => '\OpenAPI\Client\Model\OrderStatus',
-        'amount' => '\OpenAPI\Client\Model\MoneyAmount',
-        'auto_conversion_currency' => '\OpenAPI\Client\Model\AutoConversionCurrency',
+        'status' => '\WalletPay\Model\OrderStatus',
+        'amount' => '\WalletPay\Model\MoneyAmount',
+        'auto_conversion_currency' => '\WalletPay\Model\AutoConversionCurrency',
         'external_id' => 'string',
         'customer_telegram_user_id' => 'int',
         'created_date_time' => '\DateTime',
         'expiration_date_time' => '\DateTime',
         'payment_date_time' => '\DateTime',
-        'selected_payment_option' => '\OpenAPI\Client\Model\PaymentOption'
+        'selected_payment_option' => '\WalletPay\Model\PaymentOption'
     ];
 
     /**
@@ -400,7 +400,7 @@ class OrderReconciliationItem implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets status
      *
-     * @return \OpenAPI\Client\Model\OrderStatus
+     * @return \WalletPay\Model\OrderStatus
      */
     public function getStatus()
     {
@@ -410,7 +410,7 @@ class OrderReconciliationItem implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets status
      *
-     * @param \OpenAPI\Client\Model\OrderStatus $status status
+     * @param \WalletPay\Model\OrderStatus $status status
      *
      * @return self
      */
@@ -427,7 +427,7 @@ class OrderReconciliationItem implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets amount
      *
-     * @return \OpenAPI\Client\Model\MoneyAmount
+     * @return \WalletPay\Model\MoneyAmount
      */
     public function getAmount()
     {
@@ -437,7 +437,7 @@ class OrderReconciliationItem implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets amount
      *
-     * @param \OpenAPI\Client\Model\MoneyAmount $amount amount
+     * @param \WalletPay\Model\MoneyAmount $amount amount
      *
      * @return self
      */
@@ -454,7 +454,7 @@ class OrderReconciliationItem implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets auto_conversion_currency
      *
-     * @return \OpenAPI\Client\Model\AutoConversionCurrency|null
+     * @return \WalletPay\Model\AutoConversionCurrency|null
      */
     public function getAutoConversionCurrency()
     {
@@ -464,7 +464,7 @@ class OrderReconciliationItem implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets auto_conversion_currency
      *
-     * @param \OpenAPI\Client\Model\AutoConversionCurrency|null $auto_conversion_currency auto_conversion_currency
+     * @param \WalletPay\Model\AutoConversionCurrency|null $auto_conversion_currency auto_conversion_currency
      *
      * @return self
      */
@@ -616,7 +616,7 @@ class OrderReconciliationItem implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets selected_payment_option
      *
-     * @return \OpenAPI\Client\Model\PaymentOption|null
+     * @return \WalletPay\Model\PaymentOption|null
      */
     public function getSelectedPaymentOption()
     {
@@ -626,7 +626,7 @@ class OrderReconciliationItem implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets selected_payment_option
      *
-     * @param \OpenAPI\Client\Model\PaymentOption|null $selected_payment_option selected_payment_option
+     * @param \WalletPay\Model\PaymentOption|null $selected_payment_option selected_payment_option
      *
      * @return self
      */

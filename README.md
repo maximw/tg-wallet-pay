@@ -201,13 +201,13 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 
 
-$apiInstance = new OpenAPI\Client\Api\OrderApi(
+$apiInstance = new WalletPay\Api\OrderApi(
     // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
     // This is optional, `GuzzleHttp\Client` will be used as default.
     new GuzzleHttp\Client()
 );
 $wpay_store_api_key = 'wpay_store_api_key_example'; // string | Store API key
-$create_order_request = new \OpenAPI\Client\Model\CreateOrderRequest(); // \OpenAPI\Client\Model\CreateOrderRequest
+$create_order_request = new \WalletPay\Model\CreateOrderRequest(); // \WalletPay\Model\CreateOrderRequest
 
 try {
     $result = $apiInstance->create($wpay_store_api_key, $create_order_request);

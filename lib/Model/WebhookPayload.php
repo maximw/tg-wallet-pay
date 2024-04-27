@@ -5,7 +5,7 @@
  * PHP version 7.4
  *
  * @category Class
- * @package  OpenAPI\Client
+ * @package  WalletPay
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
@@ -26,17 +26,17 @@
  * Do not edit the class manually.
  */
 
-namespace OpenAPI\Client\Model;
+namespace WalletPay\Model;
 
 use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use \WalletPay\ObjectSerializer;
 
 /**
  * WebhookPayload Class Doc Comment
  *
  * @category Class
  * @description Order data. SelectedPaymentOption is absent for failed orders. Status is absent for paid orders.
- * @package  OpenAPI\Client
+ * @package  WalletPay
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
@@ -61,10 +61,10 @@ class WebhookPayload implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => 'int',
         'number' => 'string',
         'external_id' => 'string',
-        'status' => '\OpenAPI\Client\Model\OrderStatus',
+        'status' => '\WalletPay\Model\OrderStatus',
         'custom_data' => 'string',
-        'order_amount' => '\OpenAPI\Client\Model\MoneyAmount',
-        'selected_payment_option' => '\OpenAPI\Client\Model\PaymentOption',
+        'order_amount' => '\WalletPay\Model\MoneyAmount',
+        'selected_payment_option' => '\WalletPay\Model\PaymentOption',
         'order_completed_date_time' => '\DateTime'
     ];
 
@@ -450,7 +450,7 @@ class WebhookPayload implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets status
      *
-     * @return \OpenAPI\Client\Model\OrderStatus|null
+     * @return \WalletPay\Model\OrderStatus|null
      */
     public function getStatus()
     {
@@ -460,7 +460,7 @@ class WebhookPayload implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets status
      *
-     * @param \OpenAPI\Client\Model\OrderStatus|null $status status
+     * @param \WalletPay\Model\OrderStatus|null $status status
      *
      * @return self
      */
@@ -515,7 +515,7 @@ class WebhookPayload implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets order_amount
      *
-     * @return \OpenAPI\Client\Model\MoneyAmount
+     * @return \WalletPay\Model\MoneyAmount
      */
     public function getOrderAmount()
     {
@@ -525,7 +525,7 @@ class WebhookPayload implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets order_amount
      *
-     * @param \OpenAPI\Client\Model\MoneyAmount $order_amount order_amount
+     * @param \WalletPay\Model\MoneyAmount $order_amount order_amount
      *
      * @return self
      */
@@ -542,7 +542,7 @@ class WebhookPayload implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets selected_payment_option
      *
-     * @return \OpenAPI\Client\Model\PaymentOption|null
+     * @return \WalletPay\Model\PaymentOption|null
      */
     public function getSelectedPaymentOption()
     {
@@ -552,7 +552,7 @@ class WebhookPayload implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets selected_payment_option
      *
-     * @param \OpenAPI\Client\Model\PaymentOption|null $selected_payment_option selected_payment_option
+     * @param \WalletPay\Model\PaymentOption|null $selected_payment_option selected_payment_option
      *
      * @return self
      */

@@ -5,10 +5,10 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **string** | Order id |
-**status** | [**\OpenAPI\Client\Model\OrderStatus**](OrderStatus.md) |  |
+**status** | [**\WalletPay\Model\OrderStatus**](OrderStatus.md) |  |
 **number** | **string** | Human-readable short order id shown to a customer |
-**amount** | [**\OpenAPI\Client\Model\MoneyAmount**](MoneyAmount.md) |  |
-**auto_conversion_currency** | [**\OpenAPI\Client\Model\AutoConversionCurrency**](AutoConversionCurrency.md) |  | [optional]
+**amount** | [**\WalletPay\Model\MoneyAmount**](MoneyAmount.md) |  |
+**auto_conversion_currency** | [**\WalletPay\Model\AutoConversionCurrency**](AutoConversionCurrency.md) |  | [optional]
 **created_date_time** | **\DateTime** | ISO-8601 date time when order was created |
 **expiration_date_time** | **\DateTime** | ISO-8601 date time when order timeout expires |
 **completed_date_time** | **\DateTime** | ISO-8601 date time when order was completed (paid/expired/etc) | [optional]
